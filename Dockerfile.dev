@@ -8,6 +8,6 @@ RUN npm ci
 
 COPY config ./config
 COPY lib ./lib
-COPY entryPoint.js .
+COPY consume.js .
 
 CMD ["npm", "run", "start_docker"]

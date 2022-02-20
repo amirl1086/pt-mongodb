@@ -17,9 +17,9 @@ services:
       interval: 5s
       retries: 6
     container_name: pt-main-mongodb
-  init_db:
+  consume:
     build:
-      dockerfile: Dockerfile.init.dev
+      dockerfile: Dockerfile.dev
       context: .
     environment:
       MONGO_INITDB_ROOT_USERNAME: "${MONGO_INIT_USERNAME}"
@@ -29,7 +29,7 @@ services:
     depends_on:
       main_db:
         condition: service_healthy
-    container_name: pt-main-mongodb-init
+    container_name: pt-main-mongodb-consume
 
 networks:
   pt-mongo-dev-network:

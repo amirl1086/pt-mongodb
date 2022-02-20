@@ -1,35 +1,37 @@
 const amqplib = require('amqplib');
+const config = require('config');
+
 const RabbitMQ = require('./lib/rabbitmq');
+const initDB = require('./lib/initDB')
+
 
 async function processMessage(msg) {
     console.log(msg.content.toString(), 'Call email API here');
     //call your email service here to send the email
-  }
+}
+
+process.once('SIGINT', async () => {
+    console.log('got sigint, closing connection');
+    // await channel.close();
+    // await connection.close();
+    process.exit(0);
+});
+
 
 (async () => {
-    
-    const rabbitmqClient = RabbitMQ();
-    rabbitmqClient.connect();
-    const channel = await connection.createChannel();
-    channel.prefetch(10);
-    const queue = 'user.sign_up_email';
+    await initDB();
 
-    process.once('SIGINT', async () => { 
+    const rabbitmqClient = new RabbitMQ();
+    await rabbitmqClient.connect();
+    // const channel = await connection.createChannel();
+    await rabbitmqClient.createChannel();
+    await rabbitmqClient.consume();
+
+    console.log('waiting for messages, to exit press Ctrl+C');
+
+    process.once('SIGINT', async () => {
         console.log('got sigint, closing connection');
-        await channel.close();
-        await connection.close(); 
+        await rabbitmqClient.close();
         process.exit(0);
     });
-
-    await channel.assertQueue(queue, {durable: true});
-    await channel.consume(queue, async (msg) => {
-      console.log('processing messages');      
-      await processMessage(msg);
-      await channel.ack(msg);
-    }, 
-    {
-      noAck: false,
-      consumerTag: 'email_consumer'
-    });
-    console.log(" [*] Waiting for messages. To exit press CTRL+C");
 })();

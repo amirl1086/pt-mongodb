@@ -1,11 +1,20 @@
 {  
-  "db": {
+  "server": {
     "host": "main_db",
     "port": 27017,
     "mainDB_Name": "main",
     "adminDB_Name": "admin"
   },
-  "server":
+  "remotes": {
+    "rabbitmq": {
+      "host": "rabbitmq",
+      "exchange": "user-exchange",
+      "queue": "user-queue",
+      "key": "user",
+      "username": "rabbit_user",
+      "password": "rabbit_password"
+    }
+  },
   "auth": {
     "roles": ["user", "moderator", "admin"]
   }
