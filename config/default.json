@@ -1,0 +1,12 @@
+{  
+  "db": {
+    "host": "main_db",
+    "port": 27017,
+    "mainDB_Name": "main",
+    "adminDB_Name": "admin"
+  },
+  "server":
+  "auth": {
+    "roles": ["user", "moderator", "admin"]
+  }
+}

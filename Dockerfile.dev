@@ -1,0 +1,13 @@
+FROM node:16-alpine3.14
+
+WORKDIR /app
+
+COPY package.json .
+COPY package-lock.json .
+RUN npm ci
+
+COPY config ./config
+COPY lib ./lib
+COPY entryPoint.js .
+
+CMD ["npm", "run", "start_docker"]
