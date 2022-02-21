@@ -7,12 +7,14 @@
   },
   "remotes": {
     "rabbitmq": {
-      "host": "rabbitmq",
-      "exchange": "user-exchange",
-      "queue": "user-queue",
-      "key": "user",
       "username": "rabbit_user",
-      "password": "rabbit_password"
+      "password": "rabbit_password",
+      "host": "rabbitmq",
+      "exchangeName": "maindb-exchange",
+      "exchangeStrategy": "direct",
+      "queueName": "user-queue",
+      "consumerTag": "user-consumer",
+      "key": "user"
     }
   },
   "auth": {

@@ -2,20 +2,7 @@ const amqplib = require('amqplib');
 const config = require('config');
 
 const RabbitMQ = require('./lib/rabbitmq');
-const mongodb = require('./lib/db')
-
-
-async function processMessage(msg) {
-    console.log(msg.content.toString(), 'Call email API here');
-    //call your email service here to send the email
-}
-
-process.once('SIGINT', async () => {
-    console.log('got sigint, closing connection');
-    // await channel.close();
-    // await connection.close();
-    process.exit(0);
-});
+const mongodb = require('./lib/db');
 
 
 (async () => {
@@ -23,9 +10,8 @@ process.once('SIGINT', async () => {
 
     const rabbitmqClient = new RabbitMQ();
     await rabbitmqClient.connect();
-    // const channel = await connection.createChannel();
-    await rabbitmqClient.createChannel();
-    await rabbitmqClient.consume();
+    const functionName = `${config.remotes.rabbitmq.exchangeStrategy}Consume`
+    await rabbitmqClient[functionName]();
 
     console.log('waiting for messages');
 
