@@ -18,9 +18,13 @@ services:
       retries: 6
     container_name: pt-main-mongodb
   consume:
+    image: pt-consume
     build:
       dockerfile: Dockerfile.dev
       context: .
+    volumes:
+      - /app/node_modules
+      - ./:/app
     environment:
       MONGO_INITDB_ROOT_USERNAME: "${MONGO_INIT_USERNAME}"
       MONGO_INITDB_ROOT_PASSWORD: "${MONGO_INIT_PASSWORD}"

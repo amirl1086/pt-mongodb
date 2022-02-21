@@ -2,7 +2,7 @@ const amqplib = require('amqplib');
 const config = require('config');
 
 const RabbitMQ = require('./lib/rabbitmq');
-const initDB = require('./lib/initDB')
+const mongodb = require('./lib/db')
 
 
 async function processMessage(msg) {
@@ -19,7 +19,7 @@ process.once('SIGINT', async () => {
 
 
 (async () => {
-    await initDB();
+    await mongodb.initDB();
 
     const rabbitmqClient = new RabbitMQ();
     await rabbitmqClient.connect();
@@ -27,10 +27,10 @@ process.once('SIGINT', async () => {
     await rabbitmqClient.createChannel();
     await rabbitmqClient.consume();
 
-    console.log('waiting for messages, to exit press Ctrl+C');
+    console.log('waiting for messages');
 
     process.once('SIGINT', async () => {
-        console.log('got sigint, closing connection');
+        console.log('received SIGINT, closing connection');
         await rabbitmqClient.close();
         process.exit(0);
     });
