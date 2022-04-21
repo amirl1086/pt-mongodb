@@ -10,8 +10,8 @@ const mongodb = require('./lib/db');
 
     const rabbitmqClient = new RabbitMQ();
     await rabbitmqClient.connect();
-    const functionName = `${config.remotes.rabbitmq.exchangeStrategy}Consume`
-    await rabbitmqClient[functionName]();
+    const exchangeFunctionName = `${config.remotes.rabbitmq.exchangeStrategy}Consume`;
+    await rabbitmqClient[exchangeFunctionName]();
 
     console.log('waiting for messages');
 
