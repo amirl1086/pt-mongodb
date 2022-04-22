@@ -6,6 +6,7 @@
 ### Docker
 - This is the 1st service to setup
 - Run `./run_compose.sh`
+- Connect to DB via port 27011
 
 
 ### Node
